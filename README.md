@@ -115,15 +115,14 @@ curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/
 
 #### 1. Crear PRD (Interactivo)
 ```text
-@create-prd.mdc
-Quiero crear un sistema de comentarios con moderación automática
+Usando @create-prd.mdc
+Crearun PRD para un sistema de comentarios con moderación automática
 ```
 **El AI te hará preguntas clarificadoras** antes de generar el PRD. Responde con opciones numeradas para facilitar la selección.
 
 #### 2. Generar Tareas (2 Fases)
 ```text
-@generate-tasks.mdc
-Toma @prd-comentarios-system.md y genera las tareas
+Toma @prd-comentarios-system.md y genera las tareas basado en @generate-tasks.mdc
 ```
 **Proceso en 2 pasos:**
 1. Primero genera tareas principales (parent tasks)
@@ -132,8 +131,7 @@ Toma @prd-comentarios-system.md y genera las tareas
 
 #### 3. Procesar Tareas (Una por una)
 ```text
-@process-task-list.mdc
-Empezar con la primera subtarea de @tasks-prd-comentarios-system.md
+Empezar con la primera subtarea de @tasks-prd-comentarios-system.md utilizando @process-task-list.mdc
 ```
 **El AI trabajará una subtarea a la vez** y esperará tu aprobación ("yes"/"y") antes de continuar.
 
@@ -141,13 +139,13 @@ Empezar con la primera subtarea de @tasks-prd-comentarios-system.md
 
 #### 1. Crear PRD (Interactivo)
 ```bash
-/create-prd sistema de comentarios con moderación automática
+/create-prd crear un sistema de comentarios con moderación automática
 ```
 **Claude te hará preguntas clarificadoras** antes de generar el PRD. Proporciona detalles para cada pregunta.
 
 #### 2. Generar Tareas (2 Fases)
 ```bash
-/generate-tasks comentarios-system
+/generate-tasks [nombre-del-prd]
 ```
 **Proceso automático en 2 pasos:**
 1. Genera tareas principales (parent tasks)
@@ -156,7 +154,7 @@ Empezar con la primera subtarea de @tasks-prd-comentarios-system.md
 
 #### 3. Procesar Tareas (Una por una)
 ```text
-Por favor, comienza a procesar la primera subtarea de tasks-prd-comentarios-system.md siguiendo el workflow de CLAUDE.md
+/process-tasks comienza a procesar la primera subtarea de tasks-prd-comentarios-system.md
 ```
 **Claude trabajará una subtarea a la vez** y esperará tu aprobación antes de continuar.
 
