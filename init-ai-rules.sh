@@ -274,9 +274,9 @@ setup_claude() {
 
 ## IMPORTANT System Instructions
 
-You are an expert software developer following a structured, task-oriented development workflow. Your primary goal is to implement features systematically while maintaining high code quality and following existing project patterns.
+You are an expert software developer following the EXACT same structured workflow as the Cursor .mdc files. Your primary goal is to implement features systematically using the interactive 3-step process.
 
-**YOU MUST** always follow the quality standards and communication protocols defined below.
+**YOU MUST** follow the same workflow patterns as create-prd.mdc, generate-tasks.mdc, and process-task-list.mdc.
 
 ## Bash Commands
 Common commands available in this project:
@@ -290,124 +290,124 @@ Common commands available in this project:
 - `gh issue list`: List GitHub issues (if gh CLI available)
 - `gh pr create`: Create pull request
 
-## Code Style Guidelines
-- Follow existing code patterns and architecture
-- Use consistent naming conventions
-- Implement proper error handling for all functions
-- Add TypeScript types where applicable
-- Write self-documenting code with clear variable names
-- Add comments for complex business logic only
+## Core Workflow (Same as Cursor .mdc files)
 
-## Core Workflow
-
-### 1. PRD Creation Mode
+### 1. PRD Creation Mode (Interactive)
 When asked to create a PRD (Product Requirement Document):
 
-1. **Analyze Context**: Review the feature request and examine existing codebase
-2. **Create Comprehensive PRD** with these sections:
-   - Overview (Feature Name, Priority, Effort, Target Release)
-   - Problem Statement (Current State, Pain Points, User Impact)
-   - Solution Overview (Proposed Solution, Benefits, Success Metrics)
-   - Detailed Requirements (Functional, Technical, UI/UX)
-   - Implementation Considerations (Dependencies, Risks, Security)
-   - Testing Strategy (Unit, Integration, UAT, Performance)
-   - Launch Plan (Rollout, Monitoring, Rollback)
-   - Documentation Requirements
-   - Future Considerations
+**PROCESS:**
+1. **Receive Initial Prompt:** User provides brief description of feature
+2. **Ask Clarifying Questions:** BEFORE writing PRD, ask clarifying questions to gather detail. Provide options in numbered lists for easy selection.
+3. **Generate PRD:** Based on answers, create PRD with proper structure
+4. **Save PRD:** Save as `prd-[feature-name].md` in `/tasks/` directory
 
-3. **Save as**: `[feature-name]-PRD.md` in project root or docs folder
+**CLARIFYING QUESTIONS (Examples):**
+- Problem/Goal: "What problem does this feature solve?"
+- Target User: "Who is the primary user?"
+- Core Functionality: "Key actions users should perform?"
+- User Stories: "Provide user stories (As a [user], I want [action] so [benefit])"
+- Acceptance Criteria: "Success criteria?"
+- Scope/Boundaries: "What should this NOT do?"
+- Data Requirements: "What data needed?"
+- Design/UI: "Any design guidelines or mockups?"
+- Edge Cases: "Potential edge cases to consider?"
 
-### 2. Task Generation Mode
+**PRD STRUCTURE:**
+1. Introduction/Overview
+2. Goals
+3. User Stories
+4. Functional Requirements (numbered)
+5. Non-Goals (Out of Scope)
+6. Design Considerations (Optional)
+7. Technical Considerations (Optional)
+8. Success Metrics
+9. Open Questions
+
+**Target Audience:** Junior developer
+
+### 2. Task Generation Mode (2-Phase Process)
 When asked to generate tasks from a PRD:
 
-1. **Analyze the PRD** thoroughly
-2. **Create Hierarchical Task Breakdown**:
-   - Phase 1: Planning and Setup
-   - Phase 2: Backend Development  
-   - Phase 3: Frontend Development
-   - Phase 4: Testing
-   - Phase 5: Documentation and Deployment
-   - Post-Launch Tasks
+**PROCESS:**
+1. **Receive PRD Reference:** User points to specific PRD file
+2. **Analyze PRD:** Read functional requirements, user stories, etc.
+3. **Phase 1: Generate Parent Tasks:** Create ~5 high-level tasks. Present WITHOUT subtasks yet. Say: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
+4. **Wait for Confirmation:** Pause for user to respond "Go"
+5. **Phase 2: Generate Sub-Tasks:** Break down each parent into actionable sub-tasks
+6. **Identify Relevant Files:** List files to create/modify with test files
+7. **Save Task List:** Save as `tasks-[prd-file-name].md` in `/tasks/`
 
-3. **Task Guidelines**:
-   - Make tasks specific and actionable
-   - Include effort estimates: [Small: 1-4h, Medium: 4-8h, Large: 1-3d]
-   - Note dependencies between tasks
-   - Add acceptance criteria for complex tasks
+**OUTPUT FORMAT:**
+```markdown
+## Relevant Files
+- `path/file.ts` - Description
+- `path/file.test.ts` - Unit tests
 
-4. **Save as**: `tasks-[feature-name].md` in tasks folder
+### Notes
+- Unit tests alongside code files
+- Use `npx jest [path]` to run tests
 
-### 3. Task Processing Mode
+## Tasks
+- [ ] 1.0 Parent Task Title
+  - [ ] 1.1 Sub-task description
+  - [ ] 1.2 Sub-task description
+- [ ] 2.0 Parent Task Title
+  - [ ] 2.1 Sub-task description
+```
+
+### 3. Task Processing Mode (One Sub-task at a Time)
 When asked to process tasks:
 
-1. **Start with first incomplete task** (lowest numbered)
-2. **Work on ONE task at a time**
-3. **For each task**:
-   - Analyze requirements and acceptance criteria
-   - Plan implementation approach
-   - Implement the solution
-   - Verify it meets acceptance criteria
-   - Update documentation if needed
+**TASK IMPLEMENTATION:**
+- **One sub-task at a time:** Do NOT start next until user says "yes" or "y"
+- **Completion Protocol:**
+  1. Finish sub-task → mark `[x]`
+  2. If ALL subtasks under parent are `[x]`:
+     - Run full test suite
+     - Only if tests pass: `git add .`
+     - Clean up temporary files
+     - Commit with conventional format:
+       ```
+       git commit -m "feat: parent task summary" -m "- Key changes" -m "- Unit tests added" -m "Related to PRD"
+       ```
+  3. Mark parent task `[x]`
+- Stop after each sub-task for user approval
 
-4. **After completion**:
-   - Mark task as complete: `✅ [Completed: YYYY-MM-DD HH:MM]`
-   - Request approval before proceeding to next task
-   - Update task list with progress
+**TASK LIST MAINTENANCE:**
+1. Update task list as you work
+2. Mark completed sub-tasks `[x]`
+3. Add new tasks as discovered
+4. Keep "Relevant Files" updated
+
+**AI INSTRUCTIONS:**
+1. Update task list file after significant work
+2. Follow completion protocol exactly
+3. Add newly discovered tasks
+4. Keep files accurate
+5. Check which sub-task is next
+6. Pause for approval after each sub-task
 
 ## Quality Standards
-
 - Follow existing code patterns and architecture
-- Implement comprehensive error handling
-- Add appropriate logging and monitoring
-- Ensure security best practices
-- Write maintainable, readable code
-- Include proper testing coverage
+- Implement proper error handling
+- Add TypeScript types where applicable
+- Write self-documenting code
+- Test coverage for all new code
 - Update documentation as needed
 
-## Communication Protocol
+## File Naming Conventions
+- PRDs: `prd-[feature-name].md`
+- Tasks: `tasks-prd-[feature-name].md`
+- Location: `/tasks/` directory
 
-- After completing each task: "Task [X.X.X] has been completed. Please review and confirm before I proceed to task [Y.Y.Y]"
-- Wait for user confirmation before moving to next task
-- If blockers arise, clearly state the issue and suggest alternatives
-- Focus on quality over speed
+## Key Rules (Same as Cursor)
+- NEVER skip the interactive questioning for PRDs
+- ALWAYS wait for "Go" confirmation in task generation
+- NEVER start next sub-task without "yes"/"y" approval
+- MAINTAIN consistent file naming
+- FOCUS on quality over speed
 
-## Branch and Commit Strategy
-
-- Work on designated feature branch
-- Make atomic commits for each subtask
-- Use descriptive commit messages: `feat: implement task 1.2.3 - add user validation`
-
-## Key Rules
-
-- NEVER skip tasks without explicit approval
-- ALWAYS wait for confirmation before proceeding
-- MAINTAIN task list with current status
-- FOCUS on quality and existing patterns
-- COMMUNICATE clearly about progress and issues
-
-## MCP Integration
-
-When using MCP servers, leverage them for:
-- Filesystem operations for reading/writing project files
-- Database operations for schema and data management
-- GitHub integration for repository management
-- Web search for technical research and best practices
-
-## Activation Commands
-
-Use these phrases to activate specific workflows:
-- "Create PRD for [feature description]" → PRD Creation Mode
-- "Generate tasks from PRD" → Task Generation Mode  
-- "Process task list" → Task Processing Mode
-- "Start implementation" → Begin systematic task execution
-
-## Debug and Iteration
-- Use `/clear` frequently to reset context between different tasks
-- Use `/undo` to revert changes and try different approaches
-- Ask Claude to create checklists for complex multi-step tasks
-- Use the `#` key to add instructions to CLAUDE.md during development
-
-IMPORTANT: Always follow the task-based workflow and wait for approval between major changes.
+IMPORTANT: This workflow mirrors exactly what Cursor does with .mdc files. Stay consistent!
 EOF
 
     # Crear configuración MCP básica si no existe
@@ -485,236 +485,265 @@ EOF
     
     # Crear comandos slash personalizados según mejores prácticas
     cat > .claude/commands/create-prd.md << 'EOF'
-Create a comprehensive Product Requirement Document (PRD) for: $ARGUMENTS
+Create a Product Requirement Document (PRD) for: $ARGUMENTS
 
-Follow these steps:
-1. Analyze the feature request and examine existing codebase patterns
-2. Create a detailed PRD with all required sections:
-   - Overview (Feature Name, Priority, Effort, Target Release)
-   - Problem Statement (Current State, Pain Points, User Impact)  
-   - Solution Overview (Proposed Solution, Benefits, Success Metrics)
-   - Detailed Requirements (Functional, Technical, UI/UX)
-   - Implementation Considerations (Dependencies, Risks, Security)
-   - Testing Strategy (Unit, Integration, UAT, Performance)
-   - Launch Plan (Rollout, Monitoring, Rollback)
-   - Documentation Requirements
-   - Future Considerations
-3. Save the PRD as `[feature-name]-PRD.md` in the project root
-4. Create initial task outline for implementation phases
+**INTERACTIVE PROCESS (Same as create-prd.mdc):**
 
-Remember to reference existing code patterns and architecture decisions.
+1. **Receive Initial Prompt:** Feature description: $ARGUMENTS
+
+2. **Ask Clarifying Questions FIRST:** Before writing PRD, ask clarifying questions with numbered options for easy selection:
+   - Problem/Goal: "What problem does this feature solve for the user?"
+   - Target User: "Who is the primary user of this feature?"
+   - Core Functionality: "Key actions a user should be able to perform?"
+   - User Stories: "Provide user stories (As a [user], I want [action] so that [benefit])"
+   - Acceptance Criteria: "How will we know when successfully implemented?"
+   - Scope/Boundaries: "What should this feature NOT do (non-goals)?"
+   - Data Requirements: "What data does this feature need?"
+   - Design/UI: "Any existing design mockups or UI guidelines?"
+   - Edge Cases: "Potential edge cases or error conditions?"
+
+3. **Generate PRD:** Based on user answers, create PRD with structure:
+   - Introduction/Overview
+   - Goals  
+   - User Stories
+   - Functional Requirements (numbered)
+   - Non-Goals (Out of Scope)
+   - Design Considerations (Optional)
+   - Technical Considerations (Optional)
+   - Success Metrics
+   - Open Questions
+
+4. **Save PRD:** Save as `prd-[feature-name].md` in `/tasks/` directory
+
+**Target Audience:** Junior developer - use clear, unambiguous language.
+
+IMPORTANT: Do NOT start implementing. Make sure to ask clarifying questions first.
 EOF
 
     cat > .claude/commands/generate-tasks.md << 'EOF'
-Generate a comprehensive task breakdown from the PRD: $ARGUMENTS
+Generate task breakdown from PRD: $ARGUMENTS
 
-Follow these steps:
-1. Read and analyze the specified PRD file
-2. Create hierarchical task structure with these phases:
-   - Phase 1: Planning and Setup
-   - Phase 2: Backend Development
-   - Phase 3: Frontend Development
-   - Phase 4: Testing
-   - Phase 5: Documentation and Deployment
-   - Post-Launch Tasks
-3. Make each task specific and actionable
-4. Include effort estimates [Small: 1-4h, Medium: 4-8h, Large: 1-3d]
-5. Note dependencies between tasks
-6. Add acceptance criteria for complex tasks
-7. Save as `tasks-[feature-name].md` in the tasks directory
+**2-PHASE PROCESS (Same as generate-tasks.mdc):**
 
-Ensure tasks align with existing project architecture and patterns.
+1. **Receive PRD Reference:** User points to PRD: $ARGUMENTS
+
+2. **Analyze PRD:** Read and analyze functional requirements, user stories, and other sections.
+
+3. **Phase 1: Generate Parent Tasks:** 
+   - Create the file and generate ~5 main, high-level tasks
+   - Present WITHOUT sub-tasks yet
+   - Say: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
+
+4. **Wait for Confirmation:** Pause and wait for user to respond with "Go"
+
+5. **Phase 2: Generate Sub-Tasks:** 
+   - Break down each parent task into actionable sub-tasks
+   - Ensure sub-tasks logically follow from parent task
+
+6. **Identify Relevant Files:** List files to create/modify with test files
+
+7. **Save Task List:** Save as `tasks-[prd-file-name].md` in `/tasks/` directory
+
+**OUTPUT FORMAT:**
+```markdown
+## Relevant Files
+- `path/file.ts` - Description
+- `path/file.test.ts` - Unit tests
+
+### Notes
+- Unit tests alongside code files  
+- Use `npx jest [path]` to run tests
+
+## Tasks
+- [ ] 1.0 Parent Task Title
+  - [ ] 1.1 Sub-task description
+  - [ ] 1.2 Sub-task description
+- [ ] 2.0 Parent Task Title
+  - [ ] 2.1 Sub-task description
+```
+
+**Target Audience:** Junior developer
+
+IMPORTANT: Must pause after parent tasks and wait for "Go" confirmation.
 EOF
 
-    cat > .claude/commands/fix-github-issue.md << 'EOF'
-Analyze and fix the GitHub issue: $ARGUMENTS
+    cat > .claude/commands/process-tasks.md << 'EOF'
+Process task list: $ARGUMENTS
 
-Follow these steps:
-1. Use `gh issue view` to get the issue details
-2. Understand the problem described in the issue
-3. Search the codebase for relevant files
-4. Implement the necessary changes to fix the issue
-5. Write and run tests to verify the fix
-6. Ensure code passes linting and type checking
-7. Create a descriptive commit message
-8. Push changes and create a PR if needed
+**ONE SUB-TASK AT A TIME (Same as process-task-list.mdc):**
 
-Remember to use the GitHub CLI (`gh`) for all GitHub-related tasks.
+**TASK IMPLEMENTATION:**
+- **One sub-task at a time:** Do NOT start next sub-task until user says "yes" or "y"
+- **Completion Protocol:**
+  1. Finish sub-task → mark `[x]`
+  2. If ALL subtasks under parent task are `[x]`:
+     - Run full test suite (`npm test`, `pytest`, etc.)
+     - Only if tests pass: `git add .`
+     - Clean up temporary files
+     - Commit with conventional format:
+       ```
+       git commit -m "feat: parent task summary" -m "- Key changes" -m "- Unit tests added" -m "Related to PRD"
+       ```
+  3. Mark parent task `[x]`
+- Stop after each sub-task for user approval
+
+**TASK LIST MAINTENANCE:**
+1. Update task list file as you work
+2. Mark completed sub-tasks `[x]`
+3. Add new tasks as discovered
+4. Keep "Relevant Files" section updated
+
+**AI INSTRUCTIONS:**
+1. Check which sub-task is next
+2. Implement one sub-task completely
+3. Update the task list file
+4. Pause for user approval ("yes"/"y")
+5. Repeat for next sub-task
+
+IMPORTANT: Follow the exact same protocol as process-task-list.mdc
 EOF
 
-    cat > .claude/commands/code-review.md << 'EOF'
-Perform a comprehensive code review of: $ARGUMENTS
+    cat > .claude/commands/quick-fix.md << 'EOF'
+Quick fix for: $ARGUMENTS
 
-Review checklist:
-1. **Code Quality**:
-   - Follows existing code patterns and style
-   - Proper error handling and edge cases
-   - No code duplication or unnecessary complexity
-   - Clear variable and function names
+Simple workflow for small fixes:
+1. Understand the issue: $ARGUMENTS
+2. Locate relevant files
+3. Implement minimal fix
+4. Test the change
+5. Commit with clear message
 
-2. **Security**:
-   - Input validation and sanitization
-   - No hardcoded secrets or sensitive data
-   - Proper authentication and authorization
-
-3. **Performance**:
-   - Efficient algorithms and data structures
-   - No memory leaks or resource waste
-   - Database queries optimized
-
-4. **Testing**:
-   - Adequate test coverage
-   - Tests cover edge cases
-   - Tests are maintainable and readable
-
-5. **Documentation**:
-   - Code is self-documenting
-   - Complex logic has comments
-   - API changes documented
-
-Provide specific feedback with file names and line numbers where applicable.
-EOF
-
-    cat > .claude/commands/debug-logs.md << 'EOF'
-Analyze and debug the logs: $ARGUMENTS
-
-Debug process:
-1. **Parse the logs** to identify patterns and errors
-2. **Categorize issues** by severity and frequency
-3. **Trace error origins** through stack traces and timestamps
-4. **Identify root causes** and potential fixes
-5. **Suggest monitoring improvements** to prevent similar issues
-6. **Create action items** with priority levels
-
-Focus on:
-- Error patterns and frequency
-- Performance bottlenecks
-- Security concerns
-- User impact assessment
-
-Provide specific recommendations for fixes and improvements.
+Use this for bugs, typos, or small improvements that don't need full PRD workflow.
 EOF
 
     # Crear script de ayuda para comandos comunes
     cat > .claude/workflow-commands.md << 'EOF'
 # Claude Workflow Commands
 
-## Custom Slash Commands
-
-The following custom commands are available (use with `/project:`):
+## Core Workflow Commands (Same as Cursor .mdc files)
 
 ### `/project:create-prd [feature description]`
-Creates a comprehensive PRD for the specified feature
+**Interactive PRD Creation** - Asks clarifying questions first, then generates PRD
+- Example: `/project:create-prd user authentication system`
+- Saves as: `prd-[feature-name].md` in `/tasks/`
 
-### `/project:generate-tasks [feature-name]`
-Generates hierarchical task breakdown from an existing PRD
+### `/project:generate-tasks [feature-name]` 
+**2-Phase Task Generation** - Parent tasks → "Go" confirmation → Sub-tasks
+- Example: `/project:generate-tasks user-auth`
+- Saves as: `tasks-prd-[feature-name].md` in `/tasks/`
 
-### `/project:fix-github-issue [issue-number]`
-Analyzes and fixes a GitHub issue using gh CLI
+### `/project:process-tasks [task-file]`
+**One Sub-task at a Time** - Implements sub-tasks with "yes"/"y" confirmations
+- Example: `/project:process-tasks tasks-prd-user-auth.md`
+- Marks `[x]` and commits when parent task complete
 
-### `/project:code-review [file/directory]`
-Performs comprehensive code review with security, performance, and quality checks
+## Additional Commands
 
-### `/project:debug-logs [log-file-or-data]`
-Analyzes logs to identify patterns, errors, and root causes
+### `/project:quick-fix [description]`
+Simple workflow for small fixes that don't need full PRD process
+- Example: `/project:quick-fix fix typo in header component`
 
-## Quick Start Commands
+## Workflow Steps
 
-### PRD Creation
-```
-/project:create-prd user authentication system
-```
+1. **Create PRD**: Answer clarifying questions → PRD generated
+2. **Generate Tasks**: Parent tasks shown → Respond "Go" → Sub-tasks generated  
+3. **Process Tasks**: One sub-task → Respond "yes"/"y" → Next sub-task
 
-### Task Generation  
-```
-/project:generate-tasks user-auth
-```
-
-### GitHub Integration
-```
-/project:fix-github-issue 123
-```
-
-### Code Review
-```
-/project:code-review src/auth/
-```
-
-## File Operations
-- Use MCP filesystem server to read/write files
-- Always maintain task list updates
-- Save PRDs and task lists in appropriate locations
+## File Naming Convention
+- PRDs: `prd-[feature-name].md`
+- Tasks: `tasks-prd-[feature-name].md`
+- Location: `/tasks/` directory
 
 ## Best Practices
-- Work systematically through tasks
-- Request approval between major tasks
-- Focus on one task at a time
-- Maintain high code quality
-- Use custom slash commands for common workflows
+- **Answer all clarifying questions** for better PRDs
+- **Always respond "Go"** to proceed with sub-task generation
+- **Respond "yes"/"y"** after reviewing each completed sub-task
+- **One sub-task at a time** - no parallel work
+- **Follow the same workflow as Cursor** - stay consistent!
+
+IMPORTANT: This mirrors exactly the Cursor .mdc workflow for consistency.
 EOF
 
     # Crear documentación de mejores prácticas esenciales
     cat > .claude/best-practices.md << 'EOF'
-# Claude Code Best Practices
+# Claude Code Best Practices - Synchronized with Cursor
 
-## Setup Configuration
+## Workflow Consistency
+This setup mirrors **exactly** the Cursor .mdc workflow to ensure consistency across AI tools.
 
-### Allowed Tools 
-Pre-configured safe tools in `.claude/settings.json`:
-- File editing operations
-- Common git commands  
-- Package manager commands (npm, yarn, pnpm)
-- MCP filesystem operations
+## Core Workflow (Same as Cursor)
 
-Add more tools using `/permissions` command or editing the settings file.
+### 1. Interactive PRD Creation
+- **Always answer clarifying questions** thoroughly
+- **Use numbered options** when provided for easy selection
+- **Don't skip the question phase** - it improves PRD quality
+- **Files saved as**: `prd-[feature-name].md` in `/tasks/`
 
-### GitHub Integration
-If `gh` CLI is available, Claude can:
-- Create and manage issues
-- Open pull requests
-- Read repository information
+### 2. 2-Phase Task Generation  
+- **Phase 1**: Review parent tasks carefully
+- **Respond "Go"** when ready for sub-tasks (don't skip this!)
+- **Phase 2**: Sub-tasks generated automatically
+- **Files saved as**: `tasks-prd-[feature-name].md` in `/tasks/`
 
-Install with: `brew install gh` (macOS) or `sudo apt install gh` (Ubuntu)
+### 3. One Sub-task Implementation
+- **One sub-task at a time** - no parallel work
+- **Respond "yes"/"y"** to proceed to next sub-task
+- **Parent task commits** happen automatically when all sub-tasks done
+- **Follow marking**: `[ ]` → `[x]` for completed sub-tasks
 
-## Workflow Tips
+## Commands Available
 
-### Context Management
-- Use `/clear` between different tasks to reset context
-- Keep `CLAUDE.md` focused on your workflow
-- Use `#` key to add project-specific instructions
+### Core Workflow Commands
+- `/project:create-prd [feature]` - Interactive PRD with questions
+- `/project:generate-tasks [feature]` - 2-phase task generation
+- `/project:process-tasks [file]` - One sub-task at a time processing
 
-### Task Management
-For complex features, use checklists:
-```markdown
-# Feature Checklist
-- [ ] Create PRD
-- [ ] Generate task list
-- [ ] Implement tasks one by one
-- [ ] Test and review
-```
+### Additional Commands  
+- `/project:quick-fix [issue]` - Simple fixes without full workflow
 
-## Custom Commands Available
-
-### Development
-- `/project:create-prd [feature]` - Create PRD
-- `/project:generate-tasks [feature]` - Generate task list
-- `/project:code-review [path]` - Review code
-- `/project:fix-github-issue [number]` - Fix GitHub issue
-- `/project:debug-logs [data]` - Analyze logs
-
-### Core Commands
-- `/clear` - Reset context
+### Native Claude Commands
+- `/clear` - Reset context between tasks
 - `/undo` - Revert last change
 - `/permissions` - Manage tool permissions
 
-## Tips for Better Results
+## File Naming Convention (Consistent with Cursor)
+- **PRDs**: `prd-[feature-name].md`
+- **Tasks**: `tasks-prd-[feature-name].md`  
+- **Location**: `/tasks/` directory
+- **Same naming as Cursor** for compatibility
 
-1. **Be Specific**: Clear instructions get better results
-2. **Provide Context**: Include relevant files and error messages
-3. **Follow Workflow**: PRD → Tasks → Implementation
-4. **Quality Gates**: Test after each major change
+## Setup Configuration
 
-Remember: Follow the structured workflow for best results.
+### Allowed Tools in `.claude/settings.json`
+- File editing operations
+- Git commands (add, commit, push, status, log)
+- Package managers (npm, yarn, pnpm)
+- MCP filesystem operations
+
+### GitHub CLI Integration (Optional)
+```bash
+# Install GitHub CLI
+brew install gh          # macOS
+sudo apt install gh      # Ubuntu
+gh auth login            # Configure
+```
+
+## Tips for Success
+
+1. **Follow the Interactive Flow**: Don't rush through questions
+2. **Respond to Confirmations**: "Go" for tasks, "yes"/"y" for sub-tasks
+3. **One Thing at a Time**: No parallel work on multiple sub-tasks
+4. **Use `/clear`** between different features to reset context
+5. **Same as Cursor**: Workflow is identical for consistency
+
+## Quality Standards
+- Follow existing code patterns
+- Implement proper error handling
+- Add TypeScript types where applicable
+- Test coverage for new code
+- Update documentation as needed
+
+Remember: The goal is **identical workflow** whether using Cursor or Claude Code!
 EOF
 
     echo -e "${GREEN}✅ Reglas de Claude Code configuradas${NC}"
