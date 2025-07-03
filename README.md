@@ -71,10 +71,10 @@ chmod +x init-ai-rules.sh
 
 ```bash
 # Para Cursor
-curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s cursor
+curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s cursor
 
 # Para Claude Code  
-curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s claude
+curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s claude
 ```
 
 ## 🎯 Uso del Script
