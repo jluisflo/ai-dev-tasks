@@ -603,18 +603,7 @@ Process task list: $ARGUMENTS
 IMPORTANT: Follow the exact same protocol as process-task-list.mdc
 EOF
 
-    cat > .claude/commands/quick-fix.md << 'EOF'
-Quick fix for: $ARGUMENTS
 
-Simple workflow for small fixes:
-1. Understand the issue: $ARGUMENTS
-2. Locate relevant files
-3. Implement minimal fix
-4. Test the change
-5. Commit with clear message
-
-Use this for bugs, typos, or small improvements that don't need full PRD workflow.
-EOF
 
     # Crear script de ayuda para comandos comunes
     cat > .claude/workflow-commands.md << 'EOF'
@@ -636,12 +625,6 @@ EOF
 **One Sub-task at a Time** - Implements sub-tasks with "yes"/"y" confirmations
 - Example: `/project:process-tasks tasks-prd-user-auth.md`
 - Marks `[x]` and commits when parent task complete
-
-## Additional Commands
-
-### `/project:quick-fix [description]`
-Simple workflow for small fixes that don't need full PRD process
-- Example: `/project:quick-fix fix typo in header component`
 
 ## Workflow Steps
 
@@ -698,9 +681,6 @@ This setup mirrors **exactly** the Cursor .mdc workflow to ensure consistency ac
 - `/project:generate-tasks [feature]` - 2-phase task generation
 - `/project:process-tasks [file]` - One sub-task at a time processing
 
-### Additional Commands  
-- `/project:quick-fix [issue]` - Simple fixes without full workflow
-
 ### Native Claude Commands
 - `/clear` - Reset context between tasks
 - `/undo` - Revert last change
@@ -751,7 +731,7 @@ EOF
     echo "   - CLAUDE.md (instrucciones principales)"
     echo "   - claude_desktop_config.json (configuración MCP básica)"
     echo "   - .claude/settings.json (herramientas permitidas)"
-    echo "   - .claude/commands/ (5 comandos slash personalizados)"
+            echo "   - .claude/commands/ (3 comandos core workflow)"
     echo "   - .claude/best-practices.md (guía esencial)"
 }
 
@@ -810,12 +790,10 @@ main() {
         echo "2. 📖 Revisa CLAUDE.md y .claude/best-practices.md"
         echo "3. 🛠️  Instala gh CLI para integración con GitHub (si no lo tienes)"
         echo ""
-        echo "💡 Comandos disponibles:"
-        echo "   • /project:create-prd [feature] - Crear PRD"
-        echo "   • /project:generate-tasks [feature] - Generar tareas"
-        echo "   • /project:fix-github-issue [número] - Arreglar issue"
-        echo "   • /project:code-review [path] - Revisar código"
-        echo "   • /project:debug-logs [data] - Analizar logs"
+        echo "💡 Comandos disponibles (mismo flujo que Cursor):"
+        echo "   • /project:create-prd [feature] - Crear PRD interactivo"
+        echo "   • /project:generate-tasks [feature] - Generar tareas (2 fases)"
+        echo "   • /project:process-tasks [file] - Procesar una subtarea a la vez"
         echo ""
         echo "🎯 Setup esencial para nuestro workflow PRD → Tasks → Processing"
     else

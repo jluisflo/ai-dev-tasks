@@ -17,7 +17,7 @@ Desarrollar features complejas con IA puede ser impredecible. Este script soluci
 | Herramienta | Soporte | Comandos Personalizados | Configuración |
 |------------|---------|-------------------------|---------------|
 | **Cursor** | ✅ Completo | `.mdc` rules | `.cursor/rules/` |
-| **Claude Code** | ✅ Completo | 5 slash commands | `CLAUDE.md` + MCP |
+| **Claude Code** | ✅ Completo | 3 slash commands | `CLAUDE.md` + MCP |
 
 ## 📦 Instalación
 
@@ -71,10 +71,10 @@ chmod +x init-ai-rules.sh
 
 ```bash
 # Para Cursor
-curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s cursor
+curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh -o /tmp/init-ai-rules.sh && chmod +x /tmp/init-ai-rules.sh && /tmp/init-ai-rules.sh cursor
 
 # Para Claude Code  
-curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s claude
+curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh -o /tmp/init-ai-rules.sh && chmod +x /tmp/init-ai-rules.sh && /tmp/init-ai-rules.sh claude
 ```
 
 ## 🎯 Uso del Script
@@ -105,7 +105,7 @@ curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/
 - `CLAUDE.md` - Instrucciones principales del workflow
 - `claude_desktop_config.json` - Configuración MCP básica
 - `.claude/settings.json` - Herramientas permitidas
-- `.claude/commands/` - 5 comandos slash personalizados
+- `.claude/commands/` - 3 comandos core workflow
 - `.claude/best-practices.md` - Guía de mejores prácticas
 - `tasks/` - Carpeta para listas de tareas
 
@@ -171,16 +171,10 @@ Por favor, comienza a procesar la primera subtarea de tasks-prd-comentarios-syst
 # Genera desglose jerárquico de tareas desde el PRD
 ```
 
-### Comandos de Desarrollo
+### Comandos de Procesamiento
 ```bash
-/project:fix-github-issue [número]
-# Analiza y arregla issue de GitHub usando gh CLI
-
-/project:code-review [archivo-o-directorio]
-# Revisión completa: calidad, seguridad, performance
-
-/project:debug-logs [archivo-o-datos]
-# Analiza logs para identificar patrones y causas raíz
+/project:process-tasks [archivo-de-tareas]
+# Procesa tareas una subtarea a la vez con confirmaciones
 ```
 
 ### Comandos Nativos de Claude
@@ -211,9 +205,7 @@ claude_desktop_config.json       # MCP configuration
 ├── commands/                   # Custom slash commands
 │   ├── create-prd.md
 │   ├── generate-tasks.md
-│   ├── fix-github-issue.md
-│   ├── code-review.md
-│   └── debug-logs.md
+│   └── process-tasks.md
 ├── best-practices.md           # Essential guide
 └── project-instructions.md     # Project-specific setup
 tasks/                          # Task lists storage
@@ -254,16 +246,10 @@ Por favor, comienza con la primera subtarea de tasks-prd-notificaciones-push.md
 # (Esperará "yes"/"y" entre cada subtarea)
 ```
 
-### 4. Revisión y Debugging
+### 4. Procesamiento de Tareas
 ```bash
-# Revisar código implementado
-/project:code-review src/notifications/
-
-# Arreglar issues encontrados
-/project:fix-github-issue 42
-
-# Analizar logs si hay problemas
-/project:debug-logs error.log
+# Procesar tareas una por una
+/project:process-tasks tasks-prd-notificaciones-push.md
 ```
 
 ## 💡 Mejores Prácticas
