@@ -55,8 +55,8 @@ gh auth login
 ### Quick Setup
 
 ```bash
-# 1. Clonar o descargar
-git clone https://github.com/tu-usuario/ai-dev-tasks.git
+# 1. Clonar o descargar  
+git clone https://github.com/jluisflo/ai-dev-tasks.git
 cd ai-dev-tasks
 
 # 2. Dar permisos de ejecución
@@ -91,10 +91,10 @@ curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/
 ```
 
 **Archivos creados:**
-- `.cursor/rules/create-prd.mdc` - Creación de PRDs
-- `.cursor/rules/generate-tasks.mdc` - Generación de tareas
-- `.cursor/rules/process-task-list.mdc` - Procesamiento sistemático
-- `tasks/` - Carpeta para listas de tareas
+- `.cursor/rules/create-prd.mdc` - Creación interactiva de PRDs
+- `.cursor/rules/generate-tasks.mdc` - Generación de tareas en 2 fases  
+- `.cursor/rules/process-task-list.mdc` - Procesamiento una subtarea a la vez
+- `tasks/` - Carpeta para PRDs y listas de tareas
 
 ### Configuración para Claude Code
 ```bash
@@ -113,40 +113,52 @@ curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/
 
 ### Para Cursor
 
-#### 1. Crear PRD
+#### 1. Crear PRD (Interactivo)
 ```text
 @create-prd.mdc
 Quiero crear un sistema de comentarios con moderación automática
 ```
+**El AI te hará preguntas clarificadoras** antes de generar el PRD. Responde con opciones numeradas para facilitar la selección.
 
-#### 2. Generar Tareas
+#### 2. Generar Tareas (2 Fases)
 ```text
 @generate-tasks.mdc
-Toma @comentarios-system-PRD.md y genera las tareas
+Toma @prd-comentarios-system.md y genera las tareas
 ```
+**Proceso en 2 pasos:**
+1. Primero genera tareas principales (parent tasks)
+2. Pregunta si continuar → Responde **"Go"**  
+3. Genera subtareas detalladas
 
-#### 3. Procesar Tareas
+#### 3. Procesar Tareas (Una por una)
 ```text
 @process-task-list.mdc
-Empezar con la primera tarea de @tasks-comentarios-system.md
+Empezar con la primera subtarea de @tasks-prd-comentarios-system.md
 ```
+**El AI trabajará una subtarea a la vez** y esperará tu aprobación ("yes"/"y") antes de continuar.
 
 ### Para Claude Code
 
-#### 1. Crear PRD
+#### 1. Crear PRD (Interactivo)
 ```bash
 /project:create-prd sistema de comentarios con moderación automática
 ```
+**Claude te hará preguntas clarificadoras** antes de generar el PRD. Proporciona detalles para cada pregunta.
 
-#### 2. Generar Tareas
+#### 2. Generar Tareas (2 Fases)
 ```bash
 /project:generate-tasks comentarios-system
 ```
+**Proceso automático en 2 pasos:**
+1. Genera tareas principales (parent tasks)
+2. Espera tu confirmación → Responde **"Go"**
+3. Genera subtareas detalladas
 
-#### 3. Procesar Tareas
+#### 3. Procesar Tareas (Una por una)
 ```text
-Por favor, comienza a procesar la primera tarea de tasks-comentarios-system.md siguiendo el workflow de CLAUDE.md
+Por favor, comienza a procesar la primera subtarea de tasks-prd-comentarios-system.md siguiendo el workflow de CLAUDE.md
 ```
+**Claude trabajará una subtarea a la vez** y esperará tu aprobación antes de continuar.
 
 ## 🎮 Comandos Personalizados de Claude
 
@@ -217,26 +229,29 @@ tasks/                          # Task lists storage
 
 ### 2. Desarrollo de Feature
 ```bash
-# Crear PRD
+# Crear PRD (responder preguntas clarificadoras)
 /project:create-prd sistema de notificaciones push
 
-# Revisar PRD generado: notifications-push-PRD.md
+# Revisar PRD generado: prd-notificaciones-push.md
 
-# Generar tareas
-/project:generate-tasks notifications-push
+# Generar tareas (proceso en 2 fases)
+/project:generate-tasks notificaciones-push
+# 1. Genera parent tasks
+# 2. Responder "Go" 
+# 3. Genera subtareas
 
-# Revisar tareas generadas: tasks-notifications-push.md
+# Revisar tareas generadas: tasks-prd-notificaciones-push.md
 ```
 
 ### 3. Implementación Sistemática
 ```text
-Por favor, comienza con la primera tarea de tasks-notifications-push.md
+Por favor, comienza con la primera subtarea de tasks-prd-notificaciones-push.md
 
-# Claude procesará tarea por tarea:
-# ✅ 1.1.1 Create feature branch
-# ✅ 1.1.2 Setup development environment  
-# 🔄 1.2.1 Create technical design document [EN PROGRESO]
-# 📋 1.2.2 Database schema design [PENDIENTE]
+# Claude procesará subtarea por subtarea:
+# ✅ 1.1 [x] Setup development environment  
+# 🔄 1.2 [ ] Create technical design document [EN PROGRESO]
+# 📋 1.3 [ ] Database schema design [PENDIENTE]
+# (Esperará "yes"/"y" entre cada subtarea)
 ```
 
 ### 4. Revisión y Debugging
@@ -254,20 +269,22 @@ Por favor, comienza con la primera tarea de tasks-notifications-push.md
 ## 💡 Mejores Prácticas
 
 ### Para Cursor
-- Usa **MAX mode** para PRDs más detallados
-- Referencia archivos específicos: `@file.ts`
-- Espera aprobación entre tareas grandes
+- **Responde preguntas clarificadoras** para PRDs más precisos
+- Usa **MAX mode** para análisis más profundos
+- Responde **"Go"** cuando se solicite para generar subtareas
+- Confirma **"yes"/"y"** entre cada subtarea durante implementación
 
 ### Para Claude Code
-- Usa `/clear` entre tareas diferentes
+- **Proporciona detalles completos** en preguntas clarificadoras
+- Usa `/clear` entre tareas diferentes para resetear contexto
+- Responde **"Go"** para proceder a generar subtareas
 - Configura herramientas permitidas en `.claude/settings.json`
-- Aprovecha comandos slash para workflows comunes
 
 ### Ambas Herramientas
-- **Sé específico**: Contexto claro = mejores resultados
-- **Una tarea a la vez**: Evita trabajar en paralelo
+- **Interactúa activamente**: El workflow requiere tu participación
+- **Una subtarea a la vez**: Evita trabajar en paralelo
 - **Revisa cada paso**: Calidad sobre velocidad
-- **Documenta cambios**: Mantén PRDs y tareas actualizadas
+- **Nomenclatura consistente**: `prd-[nombre].md` y `tasks-prd-[nombre].md`
 
 ## 🔧 Personalización
 

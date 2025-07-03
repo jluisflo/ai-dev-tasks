@@ -7,7 +7,7 @@
 #   ./init-ai-rules.sh <herramienta>
 #   
 # Uso remoto:
-#   curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s <herramienta>
+#   curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s <herramienta>
 #
 # Herramientas: cursor, claude
 
@@ -57,7 +57,7 @@ show_help() {
     echo "  $0 claude"
     echo ""
     echo -e "${YELLOW}Uso remoto:${NC}"
-    echo "  curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s cursor"
+    echo "  curl -s https://raw.githubusercontent.com/jluisflo/ai-dev-tasks/refs/heads/main/init-ai-rules.sh | bash -s cursor"
 }
 
 # Crear reglas para Cursor
@@ -68,343 +68,176 @@ setup_cursor() {
     
     # create-prd.mdc
     cat > .cursor/rules/create-prd.mdc << 'EOF'
----
-description: Creates comprehensive Product Requirement Documents for features
-globs: 
-alwaysApply: false
----
+# Rule: Generating a Product Requirements Document (PRD)
 
-You are an expert product manager and technical writer. Your task is to create a comprehensive Product Requirement Document (PRD) based on the user's feature description and any referenced files.
+## Goal
 
-## Instructions:
+To guide an AI assistant in creating a detailed Product Requirements Document (PRD) in Markdown format, based on an initial user prompt. The PRD should be clear, actionable, and suitable for a junior developer to understand and implement the feature.
 
-1. **Analyze the Context**: Review the user's feature description and examine any referenced files to understand the existing codebase, architecture, and patterns.
+## Process
 
-2. **Create a Comprehensive PRD** that includes:
+1.  **Receive Initial Prompt:** The user provides a brief description or request for a new feature or functionality.
+2.  **Ask Clarifying Questions:** Before writing the PRD, the AI *must* ask clarifying questions to gather sufficient detail. The goal is to understand the "what" and "why" of the feature, not necessarily the "how" (which the developer will figure out). Make sure to provide options in letter/number lists so I can respond easily with my selections.
+3.  **Generate PRD:** Based on the initial prompt and the user's answers to the clarifying questions, generate a PRD using the structure outlined below.
+4.  **Save PRD:** Save the generated document as `prd-[feature-name].md` inside the `/tasks` directory.
 
-### Product Requirement Document Template:
+## Clarifying Questions (Examples)
 
-```markdown
-# PRD: [Feature Name]
+The AI should adapt its questions based on the prompt, but here are some common areas to explore:
 
-## 1. Overview
-- **Feature Name**: [Clear, descriptive name]
-- **Priority**: [High/Medium/Low]
-- **Estimated Effort**: [Small/Medium/Large]
-- **Target Release**: [Version/Sprint]
+*   **Problem/Goal:** "What problem does this feature solve for the user?" or "What is the main goal we want to achieve with this feature?"
+*   **Target User:** "Who is the primary user of this feature?"
+*   **Core Functionality:** "Can you describe the key actions a user should be able to perform with this feature?"
+*   **User Stories:** "Could you provide a few user stories? (e.g., As a [type of user], I want to [perform an action] so that [benefit].)"
+*   **Acceptance Criteria:** "How will we know when this feature is successfully implemented? What are the key success criteria?"
+*   **Scope/Boundaries:** "Are there any specific things this feature *should not* do (non-goals)?"
+*   **Data Requirements:** "What kind of data does this feature need to display or manipulate?"
+*   **Design/UI:** "Are there any existing design mockups or UI guidelines to follow?" or "Can you describe the desired look and feel?"
+*   **Edge Cases:** "Are there any potential edge cases or error conditions we should consider?"
 
-## 2. Problem Statement
-- **Current State**: [What exists today]
-- **Pain Points**: [What problems are we solving]
-- **User Impact**: [Who is affected and how]
+## PRD Structure
 
-## 3. Solution Overview
-- **Proposed Solution**: [High-level description]
-- **Key Benefits**: [Primary value proposition]
-- **Success Metrics**: [How we measure success]
+The generated PRD should include the following sections:
 
-## 4. Detailed Requirements
+1.  **Introduction/Overview:** Briefly describe the feature and the problem it solves. State the goal.
+2.  **Goals:** List the specific, measurable objectives for this feature.
+3.  **User Stories:** Detail the user narratives describing feature usage and benefits.
+4.  **Functional Requirements:** List the specific functionalities the feature must have. Use clear, concise language (e.g., "The system must allow users to upload a profile picture."). Number these requirements.
+5.  **Non-Goals (Out of Scope):** Clearly state what this feature will *not* include to manage scope.
+6.  **Design Considerations (Optional):** Link to mockups, describe UI/UX requirements, or mention relevant components/styles if applicable.
+7.  **Technical Considerations (Optional):** Mention any known technical constraints, dependencies, or suggestions (e.g., "Should integrate with the existing Auth module").
+8.  **Success Metrics:** How will the success of this feature be measured? (e.g., "Increase user engagement by 10%", "Reduce support tickets related to X").
+9.  **Open Questions:** List any remaining questions or areas needing further clarification.
 
-### 4.1 Functional Requirements
-- **Core Functionality**: [Main features and capabilities]
-- **User Interactions**: [How users will interact with the feature]
-- **Data Requirements**: [What data is needed]
+## Target Audience
 
-### 4.2 Technical Requirements
-- **Architecture**: [High-level technical approach]
-- **APIs/Endpoints**: [Required integrations]
-- **Database**: [Schema changes or new tables]
-- **Performance**: [Speed, scalability requirements]
+Assume the primary reader of the PRD is a **junior developer**. Therefore, requirements should be explicit, unambiguous, and avoid jargon where possible. Provide enough detail for them to understand the feature's purpose and core logic.
 
-### 4.3 UI/UX Requirements
-- **User Flow**: [Step-by-step user journey]
-- **Interface Elements**: [Key UI components]
-- **Responsive Design**: [Mobile/tablet considerations]
-- **Accessibility**: [A11y requirements]
+## Output
 
-## 5. Implementation Considerations
+*   **Format:** Markdown (`.md`)
+*   **Location:** `/tasks/`
+*   **Filename:** `prd-[feature-name].md`
 
-### 5.1 Dependencies
-- **Internal**: [Other features/systems this depends on]
-- **External**: [Third-party services or tools]
-- **Team Dependencies**: [Other teams involved]
+## Final instructions
 
-### 5.2 Risks and Mitigation
-- **Technical Risks**: [Potential technical challenges]
-- **Business Risks**: [Market or user adoption risks]
-- **Mitigation Strategies**: [How to address risks]
-
-### 5.3 Security and Privacy
-- **Data Privacy**: [User data handling]
-- **Security Requirements**: [Authentication, authorization]
-- **Compliance**: [Regulatory requirements]
-
-## 6. Testing Strategy
-- **Unit Testing**: [Component-level testing approach]
-- **Integration Testing**: [System integration validation]
-- **User Acceptance Testing**: [End-user validation criteria]
-- **Performance Testing**: [Load and stress testing]
-
-## 7. Launch Plan
-- **Rollout Strategy**: [Phased release plan]
-- **Feature Flags**: [Gradual activation approach]
-- **Monitoring**: [Key metrics to track post-launch]
-- **Rollback Plan**: [How to revert if needed]
-
-## 8. Documentation Requirements
-- **User Documentation**: [Help articles, tutorials]
-- **Developer Documentation**: [API docs, code comments]
-- **Operational Documentation**: [Deployment, monitoring guides]
-
-## 9. Future Considerations
-- **Scalability**: [Long-term growth planning]
-- **Extensibility**: [How feature can be enhanced]
-- **Deprecation**: [End-of-life planning if applicable]
-```
-
-3. **Be Thorough but Practical**: 
-   - Include all relevant sections but focus on the most important aspects
-   - If certain sections aren't applicable, briefly note why
-   - Prioritize clarity and actionability
-
-4. **Technical Awareness**: 
-   - Reference existing code patterns and architecture
-   - Suggest implementation approaches that fit the current tech stack
-   - Consider backward compatibility and migration paths
-
-5. **Save the PRD**: Create a file named `[feature-name]-PRD.md` in the project root or appropriate documentation folder.
-
-## Output Format:
-Create the complete PRD document with all sections filled out based on the user's input and your analysis of the codebase.
+1. Do NOT start implementing the PRD
+2. Make sure to ask the user clarifying questions
+3. Take the user's answers to the clarifying questions and improve the PRD
 EOF
 
     # generate-tasks.mdc
     cat > .cursor/rules/generate-tasks.mdc << 'EOF'
----
-description: Breaks down PRDs into hierarchical, actionable task lists for implementation
-globs: 
-alwaysApply: false
----
+# Rule: Generating a Task List from a PRD
 
-You are an expert project manager and software architect. Your task is to take a Product Requirement Document (PRD) and break it down into a comprehensive, actionable task list for implementation.
+## Goal
 
-## Instructions:
+To guide an AI assistant in creating a detailed, step-by-step task list in Markdown format based on an existing Product Requirements Document (PRD). The task list should guide a developer through implementation.
 
-1. **Analyze the PRD**: Thoroughly review the provided PRD to understand:
-   - Feature scope and requirements
-   - Technical complexity
-   - Dependencies and constraints
-   - Architecture implications
+## Output
 
-2. **Create a Hierarchical Task Breakdown** with this structure:
+- **Format:** Markdown (`.md`)
+- **Location:** `/tasks/`
+- **Filename:** `tasks-[prd-file-name].md` (e.g., `tasks-prd-user-profile-editing.md`)
+
+## Process
+
+1.  **Receive PRD Reference:** The user points the AI to a specific PRD file
+2.  **Analyze PRD:** The AI reads and analyzes the functional requirements, user stories, and other sections of the specified PRD.
+3.  **Phase 1: Generate Parent Tasks:** Based on the PRD analysis, create the file and generate the main, high-level tasks required to implement the feature. Use your judgement on how many high-level tasks to use. It's likely to be about 5. Present these tasks to the user in the specified format (without sub-tasks yet). Inform the user: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
+4.  **Wait for Confirmation:** Pause and wait for the user to respond with "Go".
+5.  **Phase 2: Generate Sub-Tasks:** Once the user confirms, break down each parent task into smaller, actionable sub-tasks necessary to complete the parent task. Ensure sub-tasks logically follow from the parent task and cover the implementation details implied by the PRD.
+6.  **Identify Relevant Files:** Based on the tasks and PRD, identify potential files that will need to be created or modified. List these under the `Relevant Files` section, including corresponding test files if applicable.
+7.  **Generate Final Output:** Combine the parent tasks, sub-tasks, relevant files, and notes into the final Markdown structure.
+8.  **Save Task List:** Save the generated document in the `/tasks/` directory with the filename `tasks-[prd-file-name].md`, where `[prd-file-name]` matches the base name of the input PRD file (e.g., if the input was `prd-user-profile-editing.md`, the output is `tasks-prd-user-profile-editing.md`).
+
+## Output Format
+
+The generated task list _must_ follow this structure:
 
 ```markdown
-# Implementation Tasks for [Feature Name]
+## Relevant Files
 
-## Phase 1: Planning and Setup
-1.1 **Environment Setup**
-   - 1.1.1 Create feature branch: `feature/[feature-name]`
-   - 1.1.2 Set up development environment
-   - 1.1.3 Review and update project dependencies
+- `path/to/potential/file1.ts` - Brief description of why this file is relevant (e.g., Contains the main component for this feature).
+- `path/to/file1.test.ts` - Unit tests for `file1.ts`.
+- `path/to/another/file.tsx` - Brief description (e.g., API route handler for data submission).
+- `path/to/another/file.test.tsx` - Unit tests for `another/file.tsx`.
+- `lib/utils/helpers.ts` - Brief description (e.g., Utility functions needed for calculations).
+- `lib/utils/helpers.test.ts` - Unit tests for `helpers.ts`.
 
-1.2 **Architecture Planning**
-   - 1.2.1 Create technical design document
-   - 1.2.2 Database schema design (if applicable)
-   - 1.2.3 API endpoint specification
-   - 1.2.4 Component architecture planning
+### Notes
 
-## Phase 2: Backend Development
-2.1 **Database Layer**
-   - 2.1.1 Create/modify database schemas
-   - 2.1.2 Write database migrations
-   - 2.1.3 Create model/entity classes
-   - 2.1.4 Add data validation rules
+- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
+- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
 
-2.2 **Business Logic**
-   - 2.2.1 Implement core business logic
-   - 2.2.2 Add error handling
-   - 2.2.3 Implement security measures
-   - 2.2.4 Add logging and monitoring
+## Tasks
 
-2.3 **API Development**
-   - 2.3.1 Create API endpoints
-   - 2.3.2 Add request/response validation
-   - 2.3.3 Implement authentication/authorization
-   - 2.3.4 Add rate limiting and security headers
-
-## Phase 3: Frontend Development
-3.1 **Component Development**
-   - 3.1.1 Create base components
-   - 3.1.2 Implement user interface
-   - 3.1.3 Add form validation
-   - 3.1.4 Implement error states
-
-3.2 **Integration**
-   - 3.2.1 Connect to backend APIs
-   - 3.2.2 Add loading states
-   - 3.2.3 Implement error handling
-   - 3.2.4 Add user feedback mechanisms
-
-3.3 **Styling and UX**
-   - 3.3.1 Apply styling and themes
-   - 3.3.2 Ensure responsive design
-   - 3.3.3 Add accessibility features
-   - 3.3.4 Optimize performance
-
-## Phase 4: Testing
-4.1 **Unit Testing**
-   - 4.1.1 Write backend unit tests
-   - 4.1.2 Write frontend component tests
-   - 4.1.3 Achieve target code coverage
-   - 4.1.4 Add edge case testing
-
-4.2 **Integration Testing**
-   - 4.2.1 API integration tests
-   - 4.2.2 Database integration tests
-   - 4.2.3 End-to-end user workflows
-   - 4.2.4 Cross-browser testing
-
-4.3 **Performance Testing**
-   - 4.3.1 Load testing
-   - 4.3.2 Performance optimization
-   - 4.3.3 Memory usage validation
-   - 4.3.4 Database query optimization
-
-## Phase 5: Documentation and Deployment
-5.1 **Documentation**
-   - 5.1.1 Update API documentation
-   - 5.1.2 Write user guides
-   - 5.1.3 Update developer documentation
-   - 5.1.4 Create deployment guides
-
-5.2 **Deployment Preparation**
-   - 5.2.1 Configure staging environment
-   - 5.2.2 Set up monitoring and alerts
-   - 5.2.3 Prepare rollback procedures
-   - 5.2.4 Create deployment checklist
-
-5.3 **Release**
-   - 5.3.1 Deploy to staging
-   - 5.3.2 Conduct user acceptance testing
-   - 5.3.3 Deploy to production
-   - 5.3.4 Monitor post-deployment metrics
-
-## Post-Launch Tasks
-6.1 **Monitoring and Maintenance**
-   - 6.1.1 Monitor system performance
-   - 6.1.2 Track user adoption metrics
-   - 6.1.3 Gather user feedback
-   - 6.1.4 Plan iteration improvements
+- [ ] 1.0 Parent Task Title
+  - [ ] 1.1 [Sub-task description 1.1]
+  - [ ] 1.2 [Sub-task description 1.2]
+- [ ] 2.0 Parent Task Title
+  - [ ] 2.1 [Sub-task description 2.1]
+- [ ] 3.0 Parent Task Title (may not require sub-tasks if purely structural or configuration)
 ```
 
-3. **Task Guidelines**:
-   - Each task should be **specific and actionable**
-   - Estimate effort as: `[Small: 1-4 hours, Medium: 4-8 hours, Large: 1-3 days]`
-   - Include **acceptance criteria** for complex tasks
-   - Note **dependencies** between tasks
-   - Consider **parallel work** opportunities
+## Interaction Model
 
-4. **Customization**: 
-   - Adapt the structure based on the specific technology stack
-   - Include framework-specific tasks (React components, API routes, etc.)
-   - Account for existing code patterns and architecture
-   - Consider the team's workflow and tools
+The process explicitly requires a pause after generating parent tasks to get user confirmation ("Go") before proceeding to generate the detailed sub-tasks. This ensures the high-level plan aligns with user expectations before diving into details.
 
-5. **Save the Task List**: Create a file named `tasks-[feature-name].md` in the tasks folder or project root.
+## Target Audience
 
-## Output Format:
-Provide the complete hierarchical task breakdown with all phases, tasks, and subtasks clearly numbered and organized.
+Assume the primary reader of the task list is a **junior developer** who will implement the feature.
 EOF
 
     # process-task-list.mdc
     cat > .cursor/rules/process-task-list.mdc << 'EOF'
----
-description: Guides systematic implementation by processing task lists one task at a time
-globs: 
-alwaysApply: false
----
+# Task List Management
 
-You are an expert development project manager. Your role is to guide the implementation of features by processing task lists in a systematic, controlled manner.
+Guidelines for managing task lists in markdown files to track progress on completing a PRD
 
-## Instructions:
+## Task Implementation
+- **One sub-task at a time:** Do **NOT** start the next sub‑task until you ask the user for permission and they say "yes" or "y"
+- **Completion protocol:**  
+  1. When you finish a **sub‑task**, immediately mark it as completed by changing `[ ]` to `[x]`.
+  2. If **all** subtasks underneath a parent task are now `[x]`, follow this sequence:
+    - **First**: Run the full test suite (`pytest`, `npm test`, `bin/rails test`, etc.)
+    - **Only if all tests pass**: Stage changes (`git add .`)
+    - **Clean up**: Remove any temporary files and temporary code before committing
+    - **Commit**: Use a descriptive commit message that:
+      - Uses conventional commit format (`feat:`, `fix:`, `refactor:`, etc.)
+      - Summarizes what was accomplished in the parent task
+      - Lists key changes and additions
+      - References the task number and PRD context
+      - **Formats the message as a single-line command using `-m` flags**, e.g.:
 
-### **Task Processing Protocol**:
+        ```
+        git commit -m "feat: add payment validation logic" -m "- Validates card type and expiry" -m "- Adds unit tests for edge cases" -m "Related to T123 in PRD"
+        ```
+  3. Once all the subtasks are marked completed and changes have been committed, mark the **parent task** as completed.
+- Stop after each sub‑task and wait for the user's go‑ahead.
 
-1. **Start with the First Incomplete Task**: Always begin with the lowest numbered task that hasn't been completed.
+## Task List Maintenance
 
-2. **Focus on ONE Task at a Time**: Never work on multiple tasks simultaneously. Complete the current task fully before moving to the next.
+1. **Update the task list as you work:**
+   - Mark tasks and subtasks as completed (`[x]`) per the protocol above.
+   - Add new tasks as they emerge.
 
-3. **Task Implementation Steps**:
-   - **Analyze**: Understand the task requirements and acceptance criteria
-   - **Plan**: Outline the specific steps needed to complete the task
-   - **Implement**: Write the code, create the files, or perform the required actions
-   - **Verify**: Ensure the task meets the acceptance criteria
-   - **Document**: Update any relevant documentation
+2. **Maintain the "Relevant Files" section:**
+   - List every file created or modified.
+   - Give each file a one‑line description of its purpose.
 
-4. **After Each Task Completion**:
-   - **Mark the task as COMPLETE** by adding `✅` next to it
-   - **Add completion timestamp**: `✅ [Completed: YYYY-MM-DD HH:MM]`
-   - **Add brief completion notes** if helpful for future reference
-   - **Ask for approval** before proceeding to the next task
+## AI Instructions
 
-5. **Quality Checkpoints**:
-   - Ensure code follows existing project patterns
-   - Verify that all requirements are met
-   - Test the implementation works as expected
-   - Check for any breaking changes
+When working with task lists, the AI must:
 
-6. **Communication Protocol**:
-   - After completing each task, state: "Task [X.X.X] has been completed. Please review the changes and confirm before I proceed to task [Y.Y.Y]."
-   - Wait for user confirmation before moving to the next task
-   - If issues are found, fix them before proceeding
-
-### **Task List Management**:
-
-```markdown
-## Current Task Status
-
-### ✅ Completed Tasks:
-- 1.1.1 Create feature branch ✅ [Completed: 2024-01-15 10:30]
-- 1.1.2 Set up development environment ✅ [Completed: 2024-01-15 11:15]
-
-### 🔄 Current Task:
-- **1.1.3 Review and update project dependencies** [IN PROGRESS]
-
-### 📋 Upcoming Tasks:
-- 1.2.1 Create technical design document
-- 1.2.2 Database schema design
-- [Rest of task list...]
-
-### 📊 Progress Summary:
-- **Completed**: 2/25 tasks (8%)
-- **Current Phase**: Phase 1 - Planning and Setup
-- **Estimated Completion**: [Based on task estimates]
-```
-
-7. **Handling Blockers**:
-   - If a task cannot be completed due to dependencies, clearly state the blocker
-   - Suggest alternative tasks that can be worked on
-   - Document the blocker for resolution
-
-8. **Branch and Commit Strategy**:
-   - Work on the designated feature branch
-   - Make atomic commits for each completed subtask
-   - Use descriptive commit messages: `feat: implement task 1.2.3 - add user validation`
-
-## Key Rules:
-- **NEVER skip tasks** without explicit approval
-- **ALWAYS wait for confirmation** before proceeding to the next task
-- **MAINTAIN the task list** with current status
-- **FOCUS on quality** over speed
-- **COMMUNICATE clearly** about progress and any issues
-
-## Output Format:
-For each task, provide:
-1. Task analysis and approach
-2. Implementation details
-3. Verification steps
-4. Updated task list with completion status
-5. Request for approval to proceed
+1. Regularly update the task list file after finishing any significant work.
+2. Follow the completion protocol:
+   - Mark each finished **sub‑task** `[x]`.
+   - Mark the **parent task** `[x]` once **all** its subtasks are `[x]`.
+3. Add newly discovered tasks.
+4. Keep "Relevant Files" accurate and up to date.
+5. Before starting work, check which sub‑task is next.
+6. After implementing a sub‑task, update the file and then pause for user approval.
 EOF
 
     echo -e "${GREEN}✅ Reglas de Cursor configuradas${NC}"
