@@ -141,13 +141,13 @@ Empezar con la primera subtarea de @tasks-prd-comentarios-system.md
 
 #### 1. Crear PRD (Interactivo)
 ```bash
-/project:create-prd sistema de comentarios con moderación automática
+/create-prd sistema de comentarios con moderación automática
 ```
 **Claude te hará preguntas clarificadoras** antes de generar el PRD. Proporciona detalles para cada pregunta.
 
 #### 2. Generar Tareas (2 Fases)
 ```bash
-/project:generate-tasks comentarios-system
+/generate-tasks comentarios-system
 ```
 **Proceso automático en 2 pasos:**
 1. Genera tareas principales (parent tasks)
@@ -164,16 +164,16 @@ Por favor, comienza a procesar la primera subtarea de tasks-prd-comentarios-syst
 
 ### Comandos del Workflow Principal
 ```bash
-/project:create-prd [descripción del feature]
+/create-prd [descripción del feature]
 # Crea PRD completo con todas las secciones
 
-/project:generate-tasks [nombre-del-feature]
+/generate-tasks [nombre-del-feature]
 # Genera desglose jerárquico de tareas desde el PRD
 ```
 
 ### Comandos de Procesamiento
 ```bash
-/project:process-tasks [archivo-de-tareas]
+/process-tasks [archivo-de-tareas]
 # Procesa tareas una subtarea a la vez con confirmaciones
 ```
 
@@ -222,12 +222,12 @@ tasks/                          # Task lists storage
 ### 2. Desarrollo de Feature
 ```bash
 # Crear PRD (responder preguntas clarificadoras)
-/project:create-prd sistema de notificaciones push
+/create-prd sistema de notificaciones push
 
 # Revisar PRD generado: prd-notificaciones-push.md
 
 # Generar tareas (proceso en 2 fases)
-/project:generate-tasks notificaciones-push
+/generate-tasks notificaciones-push
 # 1. Genera parent tasks
 # 2. Responder "Go" 
 # 3. Genera subtareas
@@ -249,7 +249,7 @@ Por favor, comienza con la primera subtarea de tasks-prd-notificaciones-push.md
 ### 4. Procesamiento de Tareas
 ```bash
 # Procesar tareas una por una
-/project:process-tasks tasks-prd-notificaciones-push.md
+/process-tasks tasks-prd-notificaciones-push.md
 ```
 
 ## 💡 Mejores Prácticas

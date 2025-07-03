@@ -786,9 +786,8 @@ main() {
     echo ""
     echo "🔄 Próximos pasos:"
     if [ "$TOOL" = "claude" ]; then
-        echo "1. 🚀 Reinicia Claude Desktop para cargar las nuevas reglas"
-        echo "2. 📖 Revisa CLAUDE.md y .claude/best-practices.md"
-        echo "3. 🛠️  Instala gh CLI para integración con GitHub (si no lo tienes)"
+        echo "1. 📖 Revisa CLAUDE.md y .claude/best-practices.md"
+        echo "2. 🛠️  Instala gh CLI para integración con GitHub (si no lo tienes)"
         echo ""
         echo "💡 Comandos disponibles (mismo flujo que Cursor):"
         echo "   • /project:create-prd [feature] - Crear PRD interactivo"
@@ -797,10 +796,9 @@ main() {
         echo ""
         echo "🎯 Setup esencial para nuestro workflow PRD → Tasks → Processing"
     else
-        echo "1. Reinicia Cursor para cargar las nuevas reglas"
-        echo "2. Usa: @create-prd [descripción del feature]"
-        echo "3. Luego: @generate-tasks [nombre-del-prd]"
-        echo "4. Finalmente: @process-task-list [nombre-de-tasks]"
+        echo "1. Usa: @create-prd [descripción del feature]"
+        echo "2. Luego: @generate-tasks [nombre-del-prd]"
+        echo "3. Finalmente: @process-task-list [nombre-de-tasks]"
     fi
     echo -e "${NC}"
 }
