@@ -1,134 +1,318 @@
-# 🚀 AI Dev Tasks for Cursor 🤖
+# 🚀 AI Rules Initializer - Setup de Workflow para Cursor y Claude Code
 
-Welcome to **AI Dev Tasks**! This repository provides a collection of `.mdc` (Markdown Command) files designed to supercharge your feature development workflow within the [Cursor](https://cursor.sh/) editor. By leveraging these commands with Cursor's AI Agent, you can systematically approach building features, from ideation to implementation, with built-in checkpoints for verification.
+Un script bash que configura automáticamente flujos de trabajo estructurados para desarrollo con IA en **Cursor** y **Claude Code**. Convierte el desarrollo caótico en un proceso sistemático: **PRD → Tareas → Implementación**.
 
-Stop wrestling with monolithic AI requests and start guiding your AI collaborator step-by-step!
+## ✨ ¿Por qué usar este script?
 
-## ✨ The Core Idea
+Desarrollar features complejas con IA puede ser impredecible. Este script soluciona esto implementando un workflow estructurado:
 
-Building complex features with AI can sometimes feel like a black box. This workflow aims to bring structure, clarity, and control to the process by:
+1. **📋 Definir Alcance**: PRD (Product Requirement Document) claro
+2. **🎯 Planificación Detallada**: Desglose en tareas granulares y accionables  
+3. **⚡ Implementación Iterativa**: Una tarea a la vez, con checkpoints de calidad
 
-1. **Defining Scope:** Clearly outlining what needs to be built with a Product Requirement Document (PRD).
-2. **Detailed Planning:** Breaking down the PRD into a granular, actionable task list.
-3. **Iterative Implementation:** Guiding the AI to tackle one task at a time, allowing you to review and approve each change.
+**Resultado**: Desarrollo más confiable, controlado y eficiente con IA.
 
-This structured approach helps ensure the AI stays on track, makes it easier to debug issues, and gives you confidence in the generated code.
+## 🛠️ Herramientas Soportadas
 
-## Workflow: From Idea to Implemented Feature 💡➡️💻
+| Herramienta | Soporte | Comandos Personalizados | Configuración |
+|------------|---------|-------------------------|---------------|
+| **Cursor** | ✅ Completo | `.mdc` rules | `.cursor/rules/` |
+| **Claude Code** | ✅ Completo | 5 slash commands | `CLAUDE.md` + MCP |
 
-Here's the step-by-step process using the `.mdc` files in this repository:
+## 📦 Instalación
 
-### 1️⃣ Create a Product Requirement Document (PRD)
+### Prerrequisitos
 
-First, lay out the blueprint for your feature. A PRD clarifies what you're building, for whom, and why.
+#### Para Cursor:
+```bash
+# 1. Descargar Cursor
+# Visita: https://cursor.sh/
+# 2. Instalar y configurar cuenta Pro (recomendado)
+```
 
-You can create a lightweight PRD directly within Cursor:
+#### Para Claude Code:
+```bash
+# 1. Claude Pro (requerido)
+# Visita: https://claude.ai/
 
-1. Ensure you have the `create-prd.mdc` file from this repository accessible.
-2. In Cursor's Agent chat, initiate PRD creation:
+# 2. Node.js (para servidores MCP)
+# Visita: https://nodejs.org/
 
-    ```text
-    Use @create-prd.mdc
-    Here's the feature I want to build: [Describe your feature in detail]
-    Reference these files to help you: [Optional: @file1.py @file2.ts]
-    ```
-    *(Pro Tip: For complex PRDs, using MAX mode in Cursor is highly recommended if your budget allows for more comprehensive generation.)*
+# 3. GitHub CLI (opcional pero recomendado)
+# macOS:
+brew install gh
 
-    ![Example of initiating PRD creation](https://pbs.twimg.com/media/Go6DDlyX0AAS7JE?format=jpg&name=large)
+# Ubuntu:
+sudo apt install gh
 
-### 2️⃣ Generate Your Task List from the PRD
+# Windows:
+winget install GitHub.cli
 
-With your PRD drafted (e.g., `MyFeature-PRD.md`), the next step is to generate a detailed, step-by-step implementation plan for your AI Developer.
+# Configurar después de instalar:
+gh auth login
+```
 
-1. Ensure you have `generate-tasks.mdc` accessible.
-2. In Cursor's Agent chat, use the PRD to create tasks:
+### Quick Setup
 
-    ```text
-    Now take @MyFeature-PRD.md and create tasks using @generate-tasks.mdc
-    ```
-    *(Note: Replace `@MyFeature-PRD.md` with the actual filename of the PRD you generated in step 1.)*
+```bash
+# 1. Clonar o descargar
+git clone https://github.com/tu-usuario/ai-dev-tasks.git
+cd ai-dev-tasks
 
-    ![Example of generating tasks from PRD](https://pbs.twimg.com/media/Go6FITbWkAA-RCT?format=jpg&name=medium)
+# 2. Dar permisos de ejecución
+chmod +x init-ai-rules.sh
 
-### 3️⃣ Examine Your Task List
+# 3. Ejecutar para tu herramienta
+./init-ai-rules.sh cursor    # Para Cursor
+./init-ai-rules.sh claude    # Para Claude Code
+```
 
-You'll now have a well-structured task list, often with tasks and sub-tasks, ready for the AI to start working on. This provides a clear roadmap for implementation.
+### Uso Remoto (Una Línea)
 
-![Example of a generated task list](https://pbs.twimg.com/media/Go6GNuOWsAEcSDm?format=jpg&name=medium)
+```bash
+# Para Cursor
+curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s cursor
 
-### 4️⃣ Instruct the AI to Work Through Tasks (and Mark Completion)
+# Para Claude Code  
+curl -s https://raw.githubusercontent.com/usuario/repo/main/init-ai-rules.sh | bash -s claude
+```
 
-To ensure methodical progress and allow for verification, we'll use `process-task-list.mdc`. This command instructs the AI to focus on one task at a time and wait for your go-ahead before moving to the next.
+## 🎯 Uso del Script
 
-1. Create or ensure you have the `process-task-list.mdc` file accessible.
-2. In Cursor's Agent chat, tell the AI to start with the first task (e.g., `1.1`):
+### Ayuda del Script
+```bash
+./init-ai-rules.sh
+# Muestra ayuda con opciones disponibles
+```
 
-    ```text
-    Please start on task 1.1 and use @process-task-list.mdc
-    ```
-    *(Important: You only need to reference `@process-task-list.mdc` for the *first* task. The instructions within it guide the AI for subsequent tasks.)*
+### Configuración para Cursor
+```bash
+./init-ai-rules.sh cursor
+```
 
-    The AI will attempt the task and then prompt you to review.
+**Archivos creados:**
+- `.cursor/rules/create-prd.mdc` - Creación de PRDs
+- `.cursor/rules/generate-tasks.mdc` - Generación de tareas
+- `.cursor/rules/process-task-list.mdc` - Procesamiento sistemático
+- `tasks/` - Carpeta para listas de tareas
 
-    ![Example of starting on a task with process-task-list.mdc](https://pbs.twimg.com/media/Go6I41KWcAAAlHc?format=jpg&name=medium)
+### Configuración para Claude Code
+```bash
+./init-ai-rules.sh claude
+```
 
-### 5️⃣ Review, Approve, and Progress ✅
+**Archivos creados:**
+- `CLAUDE.md` - Instrucciones principales del workflow
+- `claude_desktop_config.json` - Configuración MCP básica
+- `.claude/settings.json` - Herramientas permitidas
+- `.claude/commands/` - 5 comandos slash personalizados
+- `.claude/best-practices.md` - Guía de mejores prácticas
+- `tasks/` - Carpeta para listas de tareas
 
-As the AI completes each task, you review the changes.
+## 🚀 Workflow Completo
 
-* If the changes are good, simply reply with "yes" (or a similar affirmative) to instruct the AI to mark the task complete and move to the next one.
-* If changes are needed, provide feedback to the AI to correct the current task before moving on.
+### Para Cursor
 
-You'll see a satisfying list of completed items grow, providing a clear visual of your feature coming to life!
+#### 1. Crear PRD
+```text
+@create-prd.mdc
+Quiero crear un sistema de comentarios con moderación automática
+```
 
-![Example of a progressing task list with completed items](https://pbs.twimg.com/media/Go6KrXZWkAA_UuX?format=jpg&name=medium)
+#### 2. Generar Tareas
+```text
+@generate-tasks.mdc
+Toma @comentarios-system-PRD.md y genera las tareas
+```
 
-While it's not always perfect, this method has proven to be a very reliable way to build out larger features with AI assistance.
+#### 3. Procesar Tareas
+```text
+@process-task-list.mdc
+Empezar con la primera tarea de @tasks-comentarios-system.md
+```
 
-### Video Demonstration 🎥
+### Para Claude Code
 
-If you'd like to see this in action, I demonstrated it on [Claire Vo's "How I AI" podcast](https://www.youtube.com/watch?v=fD4ktSkNCw4).
+#### 1. Crear PRD
+```bash
+/project:create-prd sistema de comentarios con moderación automática
+```
 
-![Demonstration of AI Dev Tasks on How I AI Podcast](https://img.youtube.com/vi/fD4ktSkNCw4/maxresdefault.jpg)
+#### 2. Generar Tareas
+```bash
+/project:generate-tasks comentarios-system
+```
 
-## 🗂️ Files in this Repository
+#### 3. Procesar Tareas
+```text
+Por favor, comienza a procesar la primera tarea de tasks-comentarios-system.md siguiendo el workflow de CLAUDE.md
+```
 
-* **`create-prd.mdc`**: Guides the AI in generating a Product Requirement Document for your feature.
-* **`generate-tasks.mdc`**: Takes a PRD markdown file as input and helps the AI break it down into a detailed, step-by-step implementation task list.
-* **`process-task-list.mdc`**: Instructs the AI on how to process the generated task list, tackling one task at a time and waiting for your approval before proceeding. (This file also contains logic for the AI to mark tasks as complete).
+## 🎮 Comandos Personalizados de Claude
 
-## 🌟 Benefits
+### Comandos del Workflow Principal
+```bash
+/project:create-prd [descripción del feature]
+# Crea PRD completo con todas las secciones
 
-* **Structured Development:** Enforces a clear process from idea to code.
-* **Step-by-Step Verification:** Allows you to review and approve AI-generated code at each small step, ensuring quality and control.
-* **Manages Complexity:** Breaks down large features into smaller, digestible tasks for the AI, reducing the chance of it getting lost or generating overly complex, incorrect code.
-* **Improved Reliability:** Offers a more dependable approach to leveraging AI for significant development work compared to single, large prompts.
-* **Clear Progress Tracking:** Provides a visual representation of completed tasks, making it easy to see how much has been done and what's next.
+/project:generate-tasks [nombre-del-feature]
+# Genera desglose jerárquico de tareas desde el PRD
+```
 
-## 🛠️ How to Use
+### Comandos de Desarrollo
+```bash
+/project:fix-github-issue [número]
+# Analiza y arregla issue de GitHub usando gh CLI
 
-1. **Clone or Download:** Get these `.mdc` files into your project or a central location where Cursor can access them.
-2. **Follow the Workflow:** Systematically use the `.mdc` files in Cursor's Agent chat as described in the 5-step workflow above.
-3. **Adapt and Iterate:**
-    * Feel free to modify the prompts within the `.mdc` files to better suit your specific needs or coding style.
-    * If the AI struggles with a task, try rephrasing your initial feature description or breaking down tasks even further.
+/project:code-review [archivo-o-directorio]
+# Revisión completa: calidad, seguridad, performance
 
-## 💡 Tips for Success
+/project:debug-logs [archivo-o-datos]
+# Analiza logs para identificar patrones y causas raíz
+```
 
-* **Be Specific:** The more context and clear instructions you provide (both in your initial feature description and any clarifications), the better the AI's output will be.
-* **MAX Mode for PRDs:** As mentioned, using MAX mode in Cursor for PRD creation (`create-prd.mdc`) can yield more thorough and higher-quality results if your budget supports it.
-* **Correct File Tagging:** Always ensure you're accurately tagging the PRD filename (e.g., `@MyFeature-PRD.md`) when generating tasks.
-* **Patience and Iteration:** AI is a powerful tool, but it's not magic. Be prepared to guide, correct, and iterate. This workflow is designed to make that iteration process smoother.
+### Comandos Nativos de Claude
+```bash
+/clear          # Limpiar contexto entre tareas
+/undo           # Revertir último cambio
+/permissions    # Gestionar herramientas permitidas
+```
 
-## 🤝 Contributing
+## 📁 Estructura de Archivos Creados
 
-Got ideas to improve these `.mdc` files or have new ones that fit this workflow? Contributions are welcome!
+### Para Cursor
+```
+.cursor/
+├── rules/
+│   ├── create-prd.mdc           # PRD creation
+│   ├── generate-tasks.mdc       # Task breakdown
+│   └── process-task-list.mdc    # Systematic processing
+└── tasks/                       # Task lists storage
+```
 
-Please feel free to:
+### Para Claude Code
+```
+CLAUDE.md                        # Main workflow instructions
+claude_desktop_config.json       # MCP configuration
+.claude/
+├── settings.json               # Allowed tools
+├── commands/                   # Custom slash commands
+│   ├── create-prd.md
+│   ├── generate-tasks.md
+│   ├── fix-github-issue.md
+│   ├── code-review.md
+│   └── debug-logs.md
+├── best-practices.md           # Essential guide
+└── project-instructions.md     # Project-specific setup
+tasks/                          # Task lists storage
+```
 
-* Open an issue to discuss changes or suggest new features.
-* Submit a pull request with your enhancements.
+## 🔄 Ejemplo de Workflow Completo
+
+### 1. Configuración Inicial
+```bash
+# Ejecutar en tu proyecto
+./init-ai-rules.sh claude
+```
+
+### 2. Desarrollo de Feature
+```bash
+# Crear PRD
+/project:create-prd sistema de notificaciones push
+
+# Revisar PRD generado: notifications-push-PRD.md
+
+# Generar tareas
+/project:generate-tasks notifications-push
+
+# Revisar tareas generadas: tasks-notifications-push.md
+```
+
+### 3. Implementación Sistemática
+```text
+Por favor, comienza con la primera tarea de tasks-notifications-push.md
+
+# Claude procesará tarea por tarea:
+# ✅ 1.1.1 Create feature branch
+# ✅ 1.1.2 Setup development environment  
+# 🔄 1.2.1 Create technical design document [EN PROGRESO]
+# 📋 1.2.2 Database schema design [PENDIENTE]
+```
+
+### 4. Revisión y Debugging
+```bash
+# Revisar código implementado
+/project:code-review src/notifications/
+
+# Arreglar issues encontrados
+/project:fix-github-issue 42
+
+# Analizar logs si hay problemas
+/project:debug-logs error.log
+```
+
+## 💡 Mejores Prácticas
+
+### Para Cursor
+- Usa **MAX mode** para PRDs más detallados
+- Referencia archivos específicos: `@file.ts`
+- Espera aprobación entre tareas grandes
+
+### Para Claude Code
+- Usa `/clear` entre tareas diferentes
+- Configura herramientas permitidas en `.claude/settings.json`
+- Aprovecha comandos slash para workflows comunes
+
+### Ambas Herramientas
+- **Sé específico**: Contexto claro = mejores resultados
+- **Una tarea a la vez**: Evita trabajar en paralelo
+- **Revisa cada paso**: Calidad sobre velocidad
+- **Documenta cambios**: Mantén PRDs y tareas actualizadas
+
+## 🔧 Personalización
+
+### Modificar Comandos de Claude
+Edita archivos en `.claude/commands/` para personalizar comportamiento:
+
+```bash
+# Ejemplo: Modificar comando de PRD
+nano .claude/commands/create-prd.md
+```
+
+### Configurar Herramientas Permitidas
+```json
+// .claude/settings.json
+{
+  "allowedTools": [
+    "Edit",
+    "Bash(git*)",
+    "Bash(npm*)",
+    "mcp__filesystem__*"
+  ]
+}
+```
+
+### Personalizar Workflow
+Edita `CLAUDE.md` para adaptar el workflow a tu proyecto específico.
+
+## 🤝 Contribuciones
+
+1. Crear feature branch
+2. Realizar cambios
+3. Enviar Pull Request
+
+## 📞 Soporte
+
+- **Issues**: Para reportar bugs o sugerir mejoras
+- **Discussions**: Para preguntas sobre uso y mejores prácticas
 
 ---
 
-Happy AI-assisted developing!
+## 🎯 Próximos Pasos
+
+1. **Configura tu herramienta**: `./init-ai-rules.sh cursor` o `./init-ai-rules.sh claude`
+2. **Prueba el workflow**: Crea un PRD simple
+3. **Experimenta con comandos**: Usa los slash commands en Claude
+4. **Adapta a tu proyecto**: Modifica según tus necesidades
+
+¡Transforma tu desarrollo con IA de caótico a sistemático! 🚀 
